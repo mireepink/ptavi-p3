@@ -8,7 +8,22 @@ import os
 from smallsmilhandler import SmallSMILHandler
 
 
-class Karaoke(SmallSMILHandler):
+class KaraokeLocal():
+
+    def __init__(self, fichero):
+        parser = make_parser()
+        sHandler = SmallSMILHandler()
+        parser.setContentHandler(sHandler)
+        parser.parse(open(fichero))
+        self.Lista = sHandler.get_tags()
+
+    def do_local(self):
+        for diccionario in self.Lista:
+            for clave in diccionario:
+                if clave != 'etiqueta' and diccionario[clave] != 'Null':
+                    if clave == 'src':
+                        os.system("wget -q " + diccionario[clave])
+                        diccionario[clave] = diccionario[clave].split('/')[-1]
 
     def __str__(self):
         salida = ""
@@ -16,9 +31,6 @@ class Karaoke(SmallSMILHandler):
             salida += str('\n' + diccionario['etiqueta'] + '\t')
             for clave in diccionario:
                 if clave != 'etiqueta' and diccionario[clave] != 'Null':
-                    if clave == 'src':
-                        os.system("wget -q " + diccionario[clave])
-                        diccionario[clave] = diccionario[clave].split('/')[-1]
                     salida += str(clave + '="' + diccionario[clave] + '"\t')
         return salida
 
@@ -29,8 +41,7 @@ if __name__ == "__main__":
     except IndexError:
         sys.exit('Usage: python karaoke.py file.smil.')
 
-parser = make_parser()
-sHandler = Karaoke()
-parser.setContentHandler(sHandler)
-parser.parse(open(fichero))
-print sHandler
+    karaoke = KaraokeLocal(fichero)
+    print karaoke
+    karaoke.do_local()
+    print karaoke
