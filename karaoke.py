@@ -4,6 +4,7 @@
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 import sys
+import os
 from smallsmilhandler import SmallSMILHandler
 
 
@@ -15,6 +16,9 @@ class Karaoke(SmallSMILHandler):
             salida += str('\n' + diccionario['etiqueta'] + '\t')
             for clave in diccionario:
                 if clave != 'etiqueta' and diccionario[clave] != 'Null':
+                    if clave == 'src':
+                        os.system("wget -q " + diccionario[clave])
+                        diccionario[clave] = diccionario[clave].split('/')[-1]
                     salida += str(clave + '="' + diccionario[clave] + '"\t')
         return salida
 
