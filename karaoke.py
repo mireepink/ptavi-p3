@@ -15,13 +15,13 @@ class Karaoke(SmallSMILHandler):
             salida += str('\n' + diccionario['etiqueta'] + '\t')
             for clave in diccionario:
                 if clave != 'etiqueta' and diccionario[clave] != 'Null':
-                  salida += str(clave + '="' + diccionario[clave] + '"\t')
+                    salida += str(clave + '="' + diccionario[clave] + '"\t')
         return salida
-        
+
 if __name__ == "__main__":
 
     try:
-        fichero = sys.argv[1]   
+        fichero = sys.argv[1]
     except IndexError:
         sys.exit('Usage: python karaoke.py file.smil.')
 
